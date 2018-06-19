@@ -3,10 +3,12 @@ const morgan =require('morgan');
 const bodyParser =require('body-parser');
 const cookieParser= require('cookie-parser');
 const session= require('express-session');
+var path =require('path');
+var exhbs=require('express-handlebars');
 
 const MongoClient = require('mongodb').MongoClient;
-const urlll = "mongodb://localhost:27017/";
-
+//const urlll = "mongodb://localhost:27017/";
+const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
 
 const app =express();
 
@@ -17,13 +19,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 // initialize cookie-parser to allow us access the cookies stored in the browser.
 app.use(cookieParser());
-// initialize express-session to allow us track the logged-in user across sessions.
+
+app.set('views',path.join(__dirname,'views'));
+app.engine('handlebars',exhbs({defaultLayout:'main'}));
+app.set('view engine','handlebars');
 
 //app.use(session());
 // Routes
+app.get('/insurance',function(req,res){
+res.sendFile(__dirname+'/ui.html');
+});
 app.get('/api/insurance',function(req,res){
   console.log('kkkkkkkkkkkkkkkkkkkkkkS ');
-  var searchValue =req.query.search;
+  //var searchValue =req.body.search;
+   var searchValue =req.query.search;
   console.log(searchValue);
   var query= { $text: { $search: searchValue } };
 
@@ -32,7 +41,10 @@ app.get('/api/insurance',function(req,res){
       var dbo = db.db("insurance_db");
       dbo.collection("insurance").find(query).toArray(function(errr, reslts) {
           if (errr) {throw errr;return;}
-          console.log(reslts);
+          console.log(reslts.length);
+          db.close();
+           //res.jsonp(reslts);
+          res.render('hom',{results :reslts,num:reslts.length});
       });
     })
 });
