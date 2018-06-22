@@ -28,25 +28,25 @@ color: white;
       <thead>
           <tr>
               <th>STATE</th>
-              <th>COUNTRY</th>
-              <th>FIPS</th>
               <th>CARRIER</th>
-              <th>ISSUER</th>
-              <th>MARKET</th>
-              <th>PLAN</th>
+              <th>PLANNAME</th>
+              <th>YEAR</th>
+              <th>METAL</th>
+              <th>AREA</th>
+              <th>PLANID</th>
           </tr>
       </thead>
       <tbody>
 
       {{#each results}}
       <tr>
-          <td class="id">{{this.state}}  </td>
-          <td class="id">{{this.county_name}}</td>
-          <td class="id">{{this.fips_code}}</td>
-          <td class="id">{{this.carrier }}</td>
-          <td class="id">{{this.issuer_id }}</td>
-          <td class="id"> {{this.market}}</td>
-          <td class="id">'{{this.plan_count }}</td>
+          <td class="id">{{this.ST}}  </td>
+          <td class="id">{{this.CARRIER}}</td>
+          <td class="id">{{this.PLANNAME}}</td>
+          <td class="id">{{this.YEAR }}</td>
+          <td class="id">{{this.METAL }}</td>
+          <td class="id"> {{this.AREA}}</td>
+          <td class="id">'{{this.PLANID }}</td>
       </tr>
       {{/each}}
       </tbody>

@@ -1,18 +1,15 @@
 const csv=require('csvtojson');
 
 const MongoClient = require('mongodb').MongoClient;
-//const urlll = "mongodb://localhost:27017/";
-const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
+const urlll = "mongodb://localhost:27017/";
+//const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
 
 var dFiles=[
-             'data/individual_issuer_county_report_2014_2018_05_12.csv',
-             'data/individual_issuer_county_report_2015_2018_05_12.csv',
-             'data/individual_issuer_county_report_2016_2018_05_12.csv',
-             'data/individual_issuer_county_report_2017_2018_05_12.csv',
-             'data/individual_issuer_county_report_2018_2018_06_01.csv',
-             'data/small_group_issuer_county_report_2015_2018_05_12.csv',
-             'data/small_group_issuer_county_report_2016_2018_05_12.csv',
-             'data/small_group_issuer_county_report_2017_2018_05_12.csv'
+             //'data/plans.csv',
+             'data/plans1.csv',
+             'data/plans2.csv',
+             'data/plans3.csv',
+             'data/plans4.csv'
          ];
     dFiles.forEach(function(csvFilePath){
       csv()

@@ -7,8 +7,8 @@ var path =require('path');
 var exhbs=require('express-handlebars');
 
 const MongoClient = require('mongodb').MongoClient;
-//const urlll = "mongodb://localhost:27017/";
-const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
+const urlll = "mongodb://localhost:27017/";
+//const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
 
 const app =express();
 
