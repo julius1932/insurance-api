@@ -15,9 +15,7 @@
     "url": "git+https://github.com/julius1932/insurance-api.git"
   },
   "keywords": [
-    "Restful",
-    "Crawler",
-    "Mongoose"
+
   ],
   "author": "Julius Lastborn",
   "license": "ISC",
@@ -39,7 +37,8 @@
     "morgan": "^1.9.0",
     "node-schedule": "^1.3.0",
     "request": "^2.85.0",
-    "url-parse": "^1.4.0"
+    "url-parse": "^1.4.0",
+    "express-handlebars": "^3.0.0"
   }
 
 
