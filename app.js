@@ -8,6 +8,7 @@ var path =require('path');
 
 const MongoClient = require('mongodb').MongoClient;
 //const urlll = "mongodb://localhost:27017/";
+//const urlll = 'mongodb://junta:rootjunta123@ds117991-a0.mlab.com:17991/heroku_pv94v0fr';
 const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
 
 const app =express();
@@ -33,8 +34,8 @@ app.get('/insurance',function(req,res){
      var query= { $text: { $search: searchValue } };
      MongoClient.connect(urlll, function(rr, db) {
          if (rr) {isfound=false; return;};
-         var dbo = db.db("insurance_db");
-        /* dbo.createIndex("insurance",{ PLANNAME:'text', CARRIER:'text',ST:'text'},function(err,op) {
+         var dbo = db.db("insurance_db");//insurance_db "heroku_pv94v0fr"
+         /*dbo.createIndex("insurance",{ PLANNAME:'text', CARRIER:'text',ST:'text'},function(err,op) {
            console.log(err);
          });*/
          dbo.collection("insurance").find(query).toArray(function(errr, reslts) {
