@@ -43,8 +43,8 @@ app.get('/api/insurance',function(req,res){
           if (errr) {throw errr;return;}
           console.log(reslts.length);
           db.close();
-           //res.jsonp(reslts);
-          res.render('hom',{results :reslts,num:reslts.length});
+           res.jsonp(reslts);
+        //  res.render('hom',{results :reslts,num:reslts.length});
       });
     })
 });
