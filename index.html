@@ -55,9 +55,9 @@ th {
      /* Send the data using post with element id name and name2*/
       var searchValue= $('#search').val();
     // GET/READ
-    alert(searchVaue);
+    alert(searchValue);
         $.ajax({
-            url: 'https://health-insurance-api.herokuapp.com/insurance?search='+searchVaue,
+            url: 'https://health-insurance-api.herokuapp.com/insurance?search='+searchValue,
             dataType: 'jsonp',
             success: function(data) {
                 var tbodyEl = $('tbody');
