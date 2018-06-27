@@ -47,17 +47,17 @@ th {
     </table>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
- jQuery(function() {
+ $(function() {
      alert("response");
-    $("#formoid").submit(function(event) {
+    //$("#formoid").submit(function(event) {
       /* stop form from submitting normally */
-      event.preventDefault();
+      //event.preventDefault();
      /* Send the data using post with element id name and name2*/
-      var searchValue= $('#search').val();
+     // var searchValue= $('#search').val();
     // GET/READ
     //alert("response");
         $.ajax({
-            url: '/insurance?search='+searchValue,
+            url: '/insurance?search=ak',//+searchVaue,
             dataType: 'jsonp',
             success: function(data) {
                 var tbodyEl = $('tbody');
@@ -78,7 +78,7 @@ th {
                 });
             }
         });
-    });
+    //});
       });
     </script>
 
