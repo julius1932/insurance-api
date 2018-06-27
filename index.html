@@ -61,7 +61,7 @@ th {
             dataType: 'jsonp',
             success: function(data) {
                 var tbodyEl = $('tbody');
-                //alert("uuuuuuuuuuuuuuuuuuuu");
+                alert("ssssssssssssssss");
               $('#rs').text(data.length+' items found');
                 tbodyEl.html('');
                $.each(data, function(index, element) {
@@ -76,6 +76,9 @@ th {
                         </tr>\
                     ');
                 });
+            },
+            error:function(exception){
+   	            alert('Exeption:'+exception);
             }
         });
     });
