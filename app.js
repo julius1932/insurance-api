@@ -8,8 +8,8 @@ var path =require('path');
 
 const MongoClient = require('mongodb').MongoClient;
 //const urlll = "mongodb://localhost:27017/";
-//const urlll = 'mongodb://junta:rootjunta123@ds117991-a0.mlab.com:17991/heroku_pv94v0fr';
-const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
+const urlll = 'mongodb://junta:rootjunta123@ds117991-a0.mlab.com:17991/heroku_pv94v0fr';
+//const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
 
 const app =express();
 
@@ -26,6 +26,9 @@ app.engine('handlebars',exhbs({defaultLayout:'main'}));
 app.set('view engine','handlebars');*/
 
 // Routes
+app.get("/",function(req,res){
+	  res.sendFile( __dirname+'/index.html');
+ });
 app.get('/insurance',function(req,res){
   //var searchValue =req.body.search;
    var searchValue =req.query.search;
@@ -34,11 +37,12 @@ app.get('/insurance',function(req,res){
      var query= { $text: { $search: searchValue } };
      MongoClient.connect(urlll, function(rr, db) {
          if (rr) {isfound=false; return;};
-         var dbo = db.db("insurance_db");//insurance_db "heroku_pv94v0fr"
-         /*dbo.createIndex("insurance",{ PLANNAME:'text', CARRIER:'text',ST:'text'},function(err,op) {
+         //var dbo = db.db("insurance_db");//insurance_db
+         var dbo = db.db("heroku_pv94v0fr");
+         /*dbo.createIndex("insur",{ pn:'text', cr:'text',st:'text',yr:'text', pid:'text',mt:'text'},function(err,op) {
            console.log(err);
          });*/
-         dbo.collection("insurance").find(query).toArray(function(errr, reslts) {
+         dbo.collection("insur").find(query).toArray(function(errr, reslts) {
              if (errr) {throw errr;return;}
              console.log(reslts.length);
              db.close();
