@@ -57,7 +57,7 @@ th {
     // GET/READ
     //alert("response");
         $.ajax({
-            url: '/insurance?search='+searchVaue,
+            url: 'https://health-insurance-api.herokuapp.com//insurance?search='+searchVaue,
             dataType: 'jsonp',
             success: function(data) {
                 var tbodyEl = $('tbody');
