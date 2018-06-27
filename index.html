@@ -24,7 +24,7 @@ th {
 </head>
 <body>
   <h1>INSURANCE DATA LOOK UP API</h1>
-  <form id="formoid">
+  <form id="formoid"  action="" title="" method="post">
         <div>
             <label class="title">search Term</label>
             <input type="text" id="search" name="search" >
@@ -49,6 +49,7 @@ th {
 <script type="text/javascript">
     $("#formoid").submit(function(event) {
       /* stop form from submitting normally */
+        alert("response");
       event.preventDefault();
      /* Send the data using post with element id name and name2*/
       var searchValue= $('#search').val();
