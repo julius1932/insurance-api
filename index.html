@@ -28,7 +28,7 @@ th {
         <div>
             <label class="title">search Term</label>
             <input type="text" id="search" name="search" >
-            <input type="button" id="submitButton"  name="submitButton" value="Search">
+            <input type="submit" id="submitButton"  name="submitButton" value="Search">
         </div>
  </form>
  <h2><div id ='rs'>O items found</div></h2>
@@ -45,10 +45,10 @@ th {
         </thead>
         <tbody></tbody>
     </table>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
  $(function() {
-     $("#formoid").onClick(function(event) {
+     $("#formoid").submit(function(event) {
       /* stop form from submitting normally */
       event.preventDefault();
      /* Send the data using post with element id name and name2*/
