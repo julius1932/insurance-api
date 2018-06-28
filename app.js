@@ -29,7 +29,7 @@ app.get('/insurance',function(req,res){
   //var searchValue =req.body.search;
    var searchValue =req.query.search;
    console.log(searchValue);
-		 regxz='^'+searchValue+'[a z]*';
+		 regxz='^[a z]*'+searchValue+'[a z]*';
 		  console.log(regxz);
    if(searchValue){
      var query=  {$text: { $search: regxz}};
