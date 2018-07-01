@@ -4,6 +4,8 @@ const bodyParser =require('body-parser');
 const cookieParser= require('cookie-parser');
 const session= require('express-session');
 var path =require('path');
+var SpellChecker = require('simple-spellchecker');
+var dictionary = SpellChecker.getDictionarySync("en-US");
 //var exhbs=require('express-handlebars');
 
 const MongoClient = require('mongodb').MongoClient;
@@ -20,7 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 // initialize cookie-parser to allow us access the cookies stored in the browser.
 app.use(cookieParser());
-
+ var feilds=['cr','yr','st','mt','pn'];
 // Routes
 app.get("/",function(req,res){
 	  res.sendFile( __dirname+'/index.html');
@@ -28,54 +30,86 @@ app.get("/",function(req,res){
 app.get('/insurance',function(req,res){
   //var searchValue =req.body.search;
    var searchValue =req.query.search;
-   console.log(searchValue);
-		 regxz='^[a z]*'+searchValue+'[a z]*';
-		  console.log(regxz);
    if(searchValue){
-     var query=  {$text: { $search: regxz}};
+		 searchValue= searchValue.toLowerCase();
+		 var arrWords=searchValue.split(' ');
+		 searchValue='';
+		 arrWords.forEach(function(wrd){
+	     searchValue+=' '+wrd.trim();/*ensure only single space between words*/
+	   });
+	   searchValue=searchValue.trim();/*removing leading spaces*/
+		 arrWords=searchValue.split(' ');
+		 var rg=searchValue;
+		 arrWords.forEach(function(wrd){
+	     var sgtns = dictionary.getSuggestions(wrd,5,7);// array size , edit distance 7
+			 sgtns.forEach(function(sgtn){
+				 if(rg){
+					  rg+='|'+sgtn
+				 }else{
+					 rg=sgtn;
+				 }
+			 });
+	   });
+		 var arrQr=[];
+		 feilds.forEach(function(feild){
+			  var item ={};
+			  item[feild]={$regex:rg,$options: 'i'};
+			  arrQr.push(item);
+		 });
+     //{$text: { $search: regxz}};
      MongoClient.connect(urlll, function(rr, db) {
          if (rr) {isfound=false; return;};
           //var dbo = db.db("insurance_db");//insurance_db
-         var dbo = db.db("heroku_pv94v0fr");
+           var dbo = db.db("heroku_pv94v0fr");
          /*dbo.createIndex("insur",{ pn:'text', cr:'text',st:'text',yr:'text', pid:'text',mt:'text'},function(err,op) {
            console.log(err);
          });*/
-				 var feilds=['cr','yr','st','mt','pn'];
+
+				 var pids=[];
+				 //query={pn:{$regex:'Oxford'}};
+				 console.log(arrQr);
+        var query={ $or:arrQr};
          dbo.collection("insur").find(query).toArray(function(errr, reslts) {
+
              if (errr) {throw errr;return;}
 						 var arr0,arr1,arr2;
-						 arr0=arr1=arr2=[];
+						 arr0=[];arr1=[];arr2=[];
+						 console.log(reslts.length);
+						  db.close();
 						  reslts.forEach(function(row){
-								var mtched=false;
-								feilds.forEach(function(feild){
-									//console.log(row[feild]);
-									 if(isNaN(row[feild])&&row[feild].startsWith(searchValue)){
-										 mtched=true;
-									 }
-								 });
-								 if(mtched){
-									   arr0.push(row);
-								 }else {
-									  feilds.forEach(function(feild){
-   									 if(isNaN(row[feild])&&row[feild].includes(searchValue)){
-   										 mtched=true;
-   									 }
-   								 });
-									 if(mtched){
-											arr1.push(row);
-									 }else{
-										 if(mtched){
-												arr2.push(row);
-										}
-									 }
-								 }
+								  var mtched=false;
+									feilds.forEach(function(feild){
+									     if(isNaN(row[feild])&&row[feild].toLowerCase().startsWith(searchValue)){
 
+										      mtched=true;
+									     }
+								   });
+								   if(mtched && !pids.includes(row['pid'])){
+									   arr0.push(row);
+										 pids.push(row['pid']);
+								   }else {
+											feilds.forEach(function(feild){
+   									       if(isNaN(row[feild])&&row[feild].toLowerCase().includes(searchValue)){
+														    //console.log(feild +' ==== '+row[feild]);
+   										          mtched=true;
+   									       }
+   								     });
+									    if(mtched && !pids.includes(row['pid'])){
+											     arr1.push(row);
+													 pids.push(row['pid']);
+									     }else{
+												 if( !pids.includes(row['pid'])){
+													  arr2.push(row);
+														pids.push(row['pid']);
+												 }
+
+									     }
+								    }
 							 });
 							 arr0=arr0.concat(arr1);
 						   arr0=arr0.concat(arr2);
-             console.log(arr0.length);
-             db.close();
-              res.jsonp(arr0);
+               console.log(arr0.length);
+               res.jsonp(arr0);
            //  res.render('hom',{results :reslts,num:reslts.length});
          });
        })
