@@ -67,7 +67,7 @@ app.get('/insurance',function(req,res){
 			  item[feild]={$regex:rg,$options: 'i'};
 			  arrQr.push(item);
 		 });
-//{$text: { $search: searchValue}}
+//{$text: { $search: st}}
      MongoClient.connect(urlll, function(rr, db) {
          if (rr) {isfound=false; return;};
            //var dbo = db.db("insurance_db");//insurance_db
@@ -75,10 +75,11 @@ app.get('/insurance',function(req,res){
          /*dbo.createIndex("insur",{ pn:'text', cr:'text',st:'text',yr:'text', pid:'text',mt:'text'},function(err,op) {
            console.log(err);
          });*/
-
 				 var pids=[];
-
-         var query={ st : st ,$or:arrQr};
+         var query={$or:arrQr};
+         if(st){
+              query={ $text: { $search: st},$or:arrQr};
+         }
 				 console.log(arrQr);
 
         // dbo.collection("insur").find(query).skip( page > 0 ? ( ( page - 1 ) * nPerPage ) : 0 ).limit(nPerPage ).toArray(function(errr, reslts) {
