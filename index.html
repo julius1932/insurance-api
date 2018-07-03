@@ -24,14 +24,20 @@ th {
 </head>
 <body>
   <h1>INSURANCE DATA LOOK UP API</h1>
-  <form id="formoid" action="" title="" method="post">
+  <form class="formoid" action="" title="" method="post">
         <div>
             <label class="title">search Term</label>
             <input type="text" id="search" name="search" >
             <input type="submit" id="submitButton"  name="submitButton" value="Search">
         </div>
  </form>
- <h2><div id ='rs'>O items found</div></h2>
+
+ <h2>Page <div id ='rs'></div></h2>
+ <form class="formoid" action="" title="" method="post">
+       <div>
+           <input type="submit" id="submitBtton"  name="submitBtton" value="NEXT">
+       </div>
+</form>
     <table>
         <thead>
             <tr>
@@ -46,23 +52,35 @@ th {
         <tbody></tbody>
     </table>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.4.2.min.js"></script>
-<script>
- $(function() {
-     $("#formoid").submit(function(event) {
-        // alert("uuuuuuuuuuuuuuuuuuuu");
+<script type="text/javascript">
+  $(function() {
+    $('#search').change(function(event) {
+      $('#rs').text('');
+    });
+    $('#submitButton').click(function(event) {
+      $('#rs').text('');
+    });
+    $(".formoid").submit(function(event) {
       /* stop form from submitting normally */
       event.preventDefault();
      /* Send the data using post with element id name and name2*/
       var searchValue= $('#search').val();
+      var page =$('#rs').text();
+      if(!page){
+          page=0;
+      }else{
+         page=parseInt(page)+1;
+      }
     // GET/READ
-    //alert(searchValue);
+    //alert("response");
         $.ajax({
-            url: 'https://health-insurance-api.herokuapp.com/insurance?search='+searchValue,
+            url: '/insurance?search='+searchValue+'&page='+page,
             dataType: 'jsonp',
             success: function(data) {
                 var tbodyEl = $('tbody');
-                //alert("ssssssssssssssss");
+                //alert("uuuuuuuuuuuuuuuuuuuu");
               $('#rs').text(data.length+' items found');
+              $('#rs').text(page);
                 tbodyEl.html('');
                $.each(data, function(index, element) {
                     tbodyEl.append('\
@@ -76,9 +94,6 @@ th {
                         </tr>\
                     ');
                 });
-            },
-            error:function(exception){
-   	            alert('Exeption:'+exception);
             }
         });
     });
