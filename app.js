@@ -31,6 +31,7 @@ app.get('/insurance',function(req,res){
   //var searchValue =req.body.search;
    var searchValue =req.query.search;
    var page=req.query.page;
+   var st=req.query.st;
    var nPerPage=100;
    if(!page){
       page=0;
@@ -77,7 +78,7 @@ app.get('/insurance',function(req,res){
 
 				 var pids=[];
 
-         var query={ $or:arrQr};
+         var query={ st : st ,$or:arrQr};
 				 console.log(arrQr);
 
         // dbo.collection("insur").find(query).skip( page > 0 ? ( ( page - 1 ) * nPerPage ) : 0 ).limit(nPerPage ).toArray(function(errr, reslts) {
@@ -119,10 +120,11 @@ app.get('/insurance',function(req,res){
 							 arr0=arr0.concat(arr1);
 						   arr0=arr0.concat(arr2);
                console.log(arr0.length);
-               var start =page > 0 ? ( ( page - 1 ) * nPerPage ) : 0;
+               res.jsonp(arr0);
+              /* var start =page > 0 ? ( ( page - 1 ) * nPerPage ) : 0;
    						  start =page < arr0.length  ?  start: 0;
    						var end =start+1+nPerPage;
-               res.jsonp(arr0.slice(start, end));
+               res.jsonp(arr0.slice(start, end)); */
 
            //  res.render('hom',{results :reslts,num:reslts.length});
          });
