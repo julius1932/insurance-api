@@ -9,8 +9,8 @@ var dictionary = SpellChecker.getDictionarySync("en-US");
 //var exhbs=require('express-handlebars');
 
 const MongoClient = require('mongodb').MongoClient;
-const urlll = "mongodb://localhost:27017/";
-//const urlll = 'mongodb://junta:rootjunta123@ds117991-a0.mlab.com:17991/heroku_pv94v0fr';
+//const urlll = "mongodb://localhost:27017/";
+const urlll = 'mongodb://junta:rootjunta123@ds117991-a0.mlab.com:17991/heroku_pv94v0fr';
 //const urlll = "mongodb://junta:rootjunta123@ds163850.mlab.com:63850/insurance_db";
 
 const app =express();
@@ -69,8 +69,8 @@ app.get('/insurance',function(req,res){
 //{$text: { $search: searchValue}}
      MongoClient.connect(urlll, function(rr, db) {
          if (rr) {isfound=false; return;};
-           var dbo = db.db("insurance_db");//insurance_db
-           //var dbo = db.db("heroku_pv94v0fr");
+           //var dbo = db.db("insurance_db");//insurance_db
+           var dbo = db.db("heroku_pv94v0fr");
          /*dbo.createIndex("insur",{ pn:'text', cr:'text',st:'text',yr:'text', pid:'text',mt:'text'},function(err,op) {
            console.log(err);
          });*/
