@@ -80,7 +80,8 @@ app.get('/insurance',function(req,res){
          var query={ $or:arrQr};
 				 console.log(arrQr);
 
-         dbo.collection("insur").find(query).skip( page > 0 ? ( ( page - 1 ) * nPerPage ) : 0 ).limit(nPerPage ).toArray(function(errr, reslts) {
+        // dbo.collection("insur").find(query).skip( page > 0 ? ( ( page - 1 ) * nPerPage ) : 0 ).limit(nPerPage ).toArray(function(errr, reslts) {
+       dbo.collection("insur").find(query).toArray(function(errr, reslts) {
             if (errr) {throw errr;return;}
             var arr0,arr1,arr2;
             arr0=[];arr1=[];arr2=[];
@@ -118,7 +119,11 @@ app.get('/insurance',function(req,res){
 							 arr0=arr0.concat(arr1);
 						   arr0=arr0.concat(arr2);
                console.log(arr0.length);
-               res.jsonp(arr0);
+               var start =page > 0 ? ( ( page - 1 ) * nPerPage ) : 0;
+   						  start =page < arr0.length  ?  start: 0;
+   						var end =start+1+nPerPage;
+               res.jsonp(arr0.slice(start, end));
+
            //  res.render('hom',{results :reslts,num:reslts.length});
          });
        })
