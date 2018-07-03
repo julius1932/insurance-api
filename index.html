@@ -24,7 +24,7 @@ th {
 </head>
 <body>
   <h1>INSURANCE DATA LOOK UP API</h1>
-  <form class="formoid" action="" title="" method="post">
+  <form id="formoid" action="" title="" method="post">
         <div>
             <label class="title">search Term</label>
             <input type="text" id="search" name="search" >
@@ -33,7 +33,7 @@ th {
         </div>
  </form>
 
- <h2><div id ='rs'>0</div> Items Found</h2>
+ <h2><div id ='rs'>0 Items Found</div> </h2>
     <table>
         <thead>
             <tr>
@@ -50,20 +50,12 @@ th {
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
   $(function() {
-    $('#search').change(function(event) {
-      $('#rs').text('');
-    });
-    $(".formoid").submit(function(event) {
+    $("#formoid").submit(function(event) {
       /* stop form from submitting normally */
       event.preventDefault();
      /* Send the data using post with element id name and name2*/
       var searchValue= $('#search').val();
       var st = $('#st').val();
-      if(!page){
-          page=0;
-      }else{
-         page=parseInt(page)+1;
-      }
     // GET/READ
     //alert("response");
         $.ajax({
@@ -72,10 +64,9 @@ th {
             success: function(data) {
                 var tbodyEl = $('tbody');
                 //alert("uuuuuuuuuuuuuuuuuuuu");
-              $('#rs').text(data.length);
-              //$('#rs').text(page);
-                tbodyEl.html('');
-               $.each(data, function(index, element) {
+                 $('#rs').text(data.length+' Items Found');
+                 tbodyEl.html('');
+                 $.each(data, function(index, element) {
                     tbodyEl.append('\
                         <tr>\
                             <td class="id">'+element.cr+'</td>\
