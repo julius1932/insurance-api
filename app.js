@@ -30,12 +30,7 @@ app.get("/",function(req,res){
 app.get('/insurance',function(req,res){
   //var searchValue =req.body.search;
    var searchValue =req.query.search;
-   var page=req.query.page;
    var st=req.query.st;
-   var nPerPage=100;
-   if(!page){
-      page=0;
-   }
    if(searchValue){
 		 searchValue= searchValue.toLowerCase();
 		 var arrWords=searchValue.split(' ');
@@ -46,18 +41,17 @@ app.get('/insurance',function(req,res){
 	   searchValue=searchValue.trim();/*removing leading spaces*/
 		 arrWords=searchValue.split(' ');
 		 var rg=searchValue;
-		 var rgTxt=searchValue;
 		 arrWords.forEach(function(wrd){
 	     var sgtns = dictionary.getSuggestions(wrd,5,7);// array size , edit distance 7
 			 rg+='|'+wrd
-			 rgTxt+=' [a z]*'+wrd+'[a z]*'
+       if(wrd.length>=4){
+   			  rg+='|'+wrd.substring(0,3);/* MATCHING FIRST 3 LETTERS*/
+   		 }
 			 sgtns.forEach(function(sgtn){
 				 if(rg){
 					  rg+='|'+sgtn
-						rgTxt+=' [a z]*'+sgtn+'[a z]*'
 				 }else{
 					 rg=sgtn;
-					 rgTxt=' [a z]*'+sgtn+'[a z]*'
 				 }
 			 });
 	   });
@@ -67,10 +61,9 @@ app.get('/insurance',function(req,res){
 			  item[feild]={$regex:rg,$options: 'i'};
 			  arrQr.push(item);
 		 });
-//{$text: { $search: st}}
      MongoClient.connect(urlll, function(rr, db) {
          if (rr) {isfound=false; return;};
-           //var dbo = db.db("insurance_db");//insurance_db
+           //var dbo = db.db("insurance_db");
            var dbo = db.db("heroku_pv94v0fr");
          /*dbo.createIndex("insur",{ pn:'text', cr:'text',st:'text',yr:'text', pid:'text',mt:'text'},function(err,op) {
            console.log(err);
@@ -78,7 +71,7 @@ app.get('/insurance',function(req,res){
 				 var pids=[];
          var query={$or:arrQr};
          if(st){
-              query={ $text: { $search: st},$or:arrQr};
+              query={ $text:{ $search: st},$or:arrQr};
          }
 				 console.log(arrQr);
 
@@ -122,12 +115,6 @@ app.get('/insurance',function(req,res){
 						   arr0=arr0.concat(arr2);
                console.log(arr0.length);
                res.jsonp(arr0);
-              /* var start =page > 0 ? ( ( page - 1 ) * nPerPage ) : 0;
-   						  start =page < arr0.length  ?  start: 0;
-   						var end =start+1+nPerPage;
-               res.jsonp(arr0.slice(start, end)); */
-
-           //  res.render('hom',{results :reslts,num:reslts.length});
          });
        })
    }
